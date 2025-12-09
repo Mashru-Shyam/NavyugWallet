@@ -102,3 +102,6 @@ cypress/screenshots
 connect.lock
 livereload.js
 lib/
+
+# Design Folders
+Designs/
