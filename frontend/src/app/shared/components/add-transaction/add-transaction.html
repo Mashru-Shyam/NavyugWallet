@@ -39,8 +39,12 @@
               <span [ngClass]="{'text-emerald-500': transactionForm.get('type')?.value === 'income', 'text-rose-500': transactionForm.get('type')?.value === 'expense', 'text-blue-500': transactionForm.get('type')?.value === 'transfer'}"
                     class="mr-1 text-2xl align-top">Rs. </span>
               <input type="number" formControlName="amount" placeholder="0"
-                class="w-32 text-center outline-none bg-transparent placeholder-gray-200 text-slate-800 focus:placeholder-transparent border-none p-0 m-0 h-9">
+                class="w-32 text-center outline-none bg-transparent placeholder-gray-200 text-slate-800 focus:placeholder-transparent border-none p-0 m-0 h-9"
+                [class.ring-2]="isInvalid('amount')"
+                [class.ring-rose-500/50]="isInvalid('amount')">
             </div>
+            <div *ngIf="isInvalid('amount')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('amount') }}</div>
+            <div *ngIf="!isInvalid('amount')" class="h-4"></div>
           </div>
 
           <div class="space-y-2">
@@ -48,18 +52,30 @@
           <div class="grid grid-cols-2 gap-3">
             <div class="space-y-0.5">
               <label class="text-[11px] font-bold text-slate-500 ml-1 uppercase tracking-wide">Date</label>
-              <div class="bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-500 transition-all h-10">
+              <div class="bg-gray-50 border rounded-xl px-3 py-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all h-10"
+                [class.border-gray-100]="!isInvalid('date')"
+                [class.border-rose-500]="isInvalid('date')"
+                [class.ring-2]="isInvalid('date')"
+                [class.ring-rose-500/30]="isInvalid('date')">
                 <i class="fa-regular fa-calendar text-gray-400 text-xs"></i>
-                <input type="date" formControlName="date" class="bg-transparent w-full text-xs font-semibold outline-none text-slate-700">
+                <input type="date" formControlName="date" class="bg-transparent w-full text-xs font-semibold outline-none text-slate-700 border-none p-0">
               </div>
+              <div *ngIf="isInvalid('date')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('date') }}</div>
+              <div *ngIf="!isInvalid('date')" class="h-4"></div>
             </div>
 
             <div class="space-y-0.5">
               <label class="text-[11px] font-bold text-slate-500 ml-1 uppercase tracking-wide">Time</label>
-              <div class="bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-500 transition-all h-10">
+              <div class="bg-gray-50 border rounded-xl px-3 py-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all h-10"
+                [class.border-gray-100]="!isInvalid('time')"
+                [class.border-rose-500]="isInvalid('time')"
+                [class.ring-2]="isInvalid('time')"
+                [class.ring-rose-500/30]="isInvalid('time')">
                 <i class="fa-regular fa-clock text-gray-400 text-xs"></i>
-                <input type="time" formControlName="time" class="bg-transparent w-full text-xs font-semibold outline-none text-slate-700">
+                <input type="time" formControlName="time" class="bg-transparent w-full text-xs font-semibold outline-none text-slate-700 border-none p-0">
               </div>
+              <div *ngIf="isInvalid('time')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('time') }}</div>
+              <div *ngIf="!isInvalid('time')" class="h-4"></div>
             </div>
           </div>
 
@@ -69,22 +85,36 @@
               <label class="text-[11px] font-bold text-slate-500 ml-1 uppercase tracking-wide">Category</label>
               <div class="relative h-10">
                 <i class="fa-solid fa-layer-group absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                <select formControlName="category" class="h-full w-full bg-gray-50 border border-gray-100 rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none appearance-none truncate">
+                <select formControlName="category" 
+                  class="h-full w-full bg-gray-50 border rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none appearance-none truncate transition-all"
+                  [class.border-gray-100]="!isInvalid('category')"
+                  [class.border-rose-500]="isInvalid('category')"
+                  [class.ring-2]="isInvalid('category')"
+                  [class.ring-rose-500/30]="isInvalid('category')">
                   <option *ngFor="let item of getCategories()" [value]="item">{{ item }}</option>
                 </select>
                 <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
               </div>
+              <div *ngIf="isInvalid('category')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('category') }}</div>
+              <div *ngIf="!isInvalid('category')" class="h-4"></div>
             </div>
 
             <div *ngIf="transactionForm.get('type')?.value === 'transfer'" class="space-y-0.5">
               <label class="text-[11px] font-bold text-slate-500 ml-1 uppercase tracking-wide">From Account</label>
               <div class="relative h-10">
                 <i class="fa-solid fa-money-bill-transfer absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                <select formControlName = "fromAccount" class="h-full w-full bg-gray-50 border border-gray-100 rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none appearance-none truncate">
+                <select formControlName="fromAccount" 
+                  class="h-full w-full bg-gray-50 border rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none appearance-none truncate transition-all"
+                  [class.border-gray-100]="!isInvalid('fromAccount')"
+                  [class.border-rose-500]="isInvalid('fromAccount')"
+                  [class.ring-2]="isInvalid('fromAccount')"
+                  [class.ring-rose-500/30]="isInvalid('fromAccount')">
                   <option *ngFor="let item of getAccounts()" [value]="item">{{ item }}</option>
                 </select>
                 <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
               </div>
+              <div *ngIf="isInvalid('fromAccount')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('fromAccount') }}</div>
+              <div *ngIf="!isInvalid('fromAccount')" class="h-4"></div>
             </div>
 
             <div class="space-y-0.5">
@@ -93,11 +123,18 @@
               </label>
               <div class="relative h-10">
                 <i class="fa-solid fa-wallet absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
-                <select formControlName="toAccount" class="h-full w-full bg-gray-50 border border-gray-100 rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none appearance-none truncate">
+                <select formControlName="toAccount" 
+                  class="h-full w-full bg-gray-50 border rounded-xl pl-8 pr-4 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-indigo-500/20 outline-none appearance-none truncate transition-all"
+                  [class.border-gray-100]="!isInvalid('toAccount')"
+                  [class.border-rose-500]="isInvalid('toAccount')"
+                  [class.ring-2]="isInvalid('toAccount')"
+                  [class.ring-rose-500/30]="isInvalid('toAccount')">
                   <option *ngFor="let item of getAccounts()" [value]="item">{{ item }}</option>
                 </select>
                 <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
               </div>
+              <div *ngIf="isInvalid('toAccount')" class="text-[10px] text-rose-500 font-medium mt-0.5 h-4">{{ getError('toAccount') }}</div>
+              <div *ngIf="!isInvalid('toAccount')" class="h-4"></div>
             </div>
           </div>
 
@@ -110,8 +147,9 @@
         </div>
 
         <button (click)="saveTransaction()"
+          [disabled]="transactionForm.invalid"
           [ngClass]="{'bg-emerald-600 shadow-emerald-500/30 hover:bg-emerald-700': transactionForm.get('type')?.value === 'income', 'bg-rose-600 shadow-rose-500/30 hover:bg-rose-700': transactionForm.get('type')?.value === 'expense', 'bg-blue-600 shadow-blue-500/30 hover:bg-blue-700': transactionForm.get('type')?.value === 'transfer'}"
-          class="w-full text-white py-3 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg active:scale-[0.98] mt-2">
+          class="w-full text-white py-3 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg active:scale-[0.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
           Save Transaction
         </button>
 

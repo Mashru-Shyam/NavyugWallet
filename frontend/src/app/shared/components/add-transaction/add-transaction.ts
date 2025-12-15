@@ -24,12 +24,12 @@ export class AddTransaction implements OnInit {
   ngOnInit(): void {
     this.transactionForm = this.fb.group({
       type: [this.transactionType, Validators.required],
-      amount: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.min(0.01)]],
       date: [new Date().toLocaleDateString('en-CA'), Validators.required],
       time: [new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), Validators.required],
-      category: [''],
-      fromAccount: [''],
-      toAccount: [''],
+      category: ['', Validators.required],
+      fromAccount: ['', Validators.required],
+      toAccount: ['', Validators.required],
       description: [''],
     })
     this.configureTransactionForm();
@@ -44,15 +44,17 @@ export class AddTransaction implements OnInit {
   }
 
   configureTransactionForm() {
-    if(this.transactionForm.get('type')?.value !== 'transfer') {
-      this.transactionForm.get('category')?.setValue(this.getCategories()[0] || '');
-    }
     const accounts = this.getAccounts();
     if(this.transactionForm.get('type')?.value === 'transfer') {
+      this.transactionForm.get('category')?.disable();
+      this.transactionForm.get('fromAccount')?.enable();
       this.transactionForm.get('fromAccount')?.setValue(accounts[0]);
       this.transactionForm.get('toAccount')?.setValue(accounts[1]);
     } else {
+      this.transactionForm.get('category')?.enable();
+      this.transactionForm.get('fromAccount')?.disable();
       this.transactionForm.get('toAccount')?.setValue(accounts[0]);
+      this.transactionForm.get('category')?.setValue(this.getCategories()[0] || '');
     }
   }
 
@@ -75,8 +77,9 @@ export class AddTransaction implements OnInit {
   }
 
   saveTransaction() {
-    // this.transactionForm.markAllAsTouched();
-    // if(this.transactionForm.invalid) return;
+    this.transactionForm.markAllAsTouched();
+    if(this.transactionForm.invalid) return;
+
     const {date, time, ...rest} = this.transactionForm.value;
     const transactionAt = new Date(`${date}T${time}`).toISOString();
     const payload: TransactionPayload = {...rest, transactionAt};
